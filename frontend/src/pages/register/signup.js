@@ -4,6 +4,7 @@ import Logo from '../../components/logo/logo';
 import {useCreateUserMutation} from '../../state/api';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../../state/authReducer';
+import { useNavigate   } from 'react-router-dom';
 
 const Signup = ({setIsMember}) => {
 
@@ -15,6 +16,8 @@ const Signup = ({setIsMember}) => {
     const [createUser,] = useCreateUserMutation();
 
     const dispatch = useDispatch();
+
+    const navigate = useNavigate ();
 
     const handleSubmit = (e) =>{
         e.preventDefault();
@@ -35,6 +38,7 @@ const Signup = ({setIsMember}) => {
         const {token} = fulfilled;
         localStorage.setItem('user',JSON.stringify({email,name, token}))
         dispatch(setLogin({email, name, token}));
+        navigate('/stats');
     }
 
     const handleError = (err) =>{

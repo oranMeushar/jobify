@@ -4,9 +4,11 @@ import { FaBriefcase, FaBug, FaCalendarCheck  } from 'react-icons/fa';
 
 import withHeaderAndNav from '../../hocs/withHeaderAndNav/withHeaderAndNav';
 import { setJobs } from '../../state/jobsReducer';
-import { getCountOfJobsTypes } from '../../state/selectors';
+import { getCountOfJobsTypes, getSeriesDataForChart } from '../../state/selectors';
 import {StatsContainer, CardsContainer} from './stats.style';
-import Card from './Card/card';
+import Card from './card/card';
+import Chart from './chart/chart';
+import { useResizeDetector } from 'react-resize-detector';
 
 const Stats = () => {
 
@@ -14,6 +16,9 @@ const Stats = () => {
 
 
     const jobs = useSelector(getCountOfJobsTypes);
+    const {categories, interview, pending, decline} = useSelector(getSeriesDataForChart);
+
+    const { width, height, ref } = useResizeDetector();
 
     const fetchJobs = async () =>{
         let res, data;
@@ -58,6 +63,17 @@ const Stats = () => {
                     countJobs={jobs['Declined']}
                     text={'Jobs Declined'}/>
             </CardsContainer>
+
+            <Chart
+                containerRef={ref}
+                categories={categories}
+                interviewSeries={interview}
+                pendingSeries={pending}
+                declineSeries={decline}
+                containerWidth={width}
+                containerHeight={height}
+            />
+                    
         </StatsContainer>
     );
 };

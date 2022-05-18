@@ -6,7 +6,9 @@
   "scripts": {
     "start": "concurrently \"nodemon app.js\" \"cd frontend && npm run start\"",
     "start-debug": "concurrently \"npm run server-debug\" \"cd frontend && npm run start\"",
-    "server-debug": "nodemon app.js --inspect"
+    "server-debug": "nodemon app.js --inspect",
+    "start-prod": "SET NODE_ENV=production&npm run start",
+    "start-prod-debug":"SET NODE_ENV=production && npm run start-debug"
   },
   "keywords": [],
   "author": "",

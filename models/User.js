@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const options = {
     optimisticConcurrency:true,
     timestamps:true,
-    selectPopulatedPaths:false,
+    selectPopulatedPaths:true,
 }
 
 const userSchema = new mongoose.Schema({
@@ -67,7 +67,6 @@ userSchema.methods = {
 };
 
 
-//TODO: DEBUGG HERE
 userSchema.pre('save', async function(next){ 
     if(this.isModified('password')){
         const hashedPassword = await bcrypt.hash(this.password, 12);

@@ -50,7 +50,6 @@ const editJob = catchAsync(async(req, res, next) =>{
 const getAllJobs = catchAsync(async(req, res, next) =>{
     const userId = req.user.id;
 
-    //TODO: POPULATE
     let allJobs = await Job.find({user:userId}).sort({createdAt:-1});
 
     

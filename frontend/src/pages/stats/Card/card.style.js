@@ -4,8 +4,8 @@ export const CardContainer = styled.div`
     background-color:white;
     padding:2vmin;
     width:50vmin;
-
     border-radius: 0.8rem;
+    border-bottom: ${({color}) => `8px solid ${color}`};
     div{
         display: flex;
         align-items: center;

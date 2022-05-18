@@ -15,7 +15,7 @@ import { setLogin } from './state/authReducer';
 import { useDispatch } from 'react-redux';
 
 
-//TODO: 1) LOADER, DINAMIC, STATS, CHECKFORERRORS, PRODUCTION
+//TODO: 1) LOADER, CHECKFORERRORS
 const App = () => {
 
   const dispatch = useDispatch();
