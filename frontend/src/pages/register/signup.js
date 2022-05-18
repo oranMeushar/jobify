@@ -5,6 +5,7 @@ import {useCreateUserMutation} from '../../state/api';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '../../state/authReducer';
 import { useNavigate   } from 'react-router-dom';
+import LoadingSpinner from '../../components/loader/loader';
 
 const Signup = ({setIsMember}) => {
 
@@ -12,6 +13,7 @@ const Signup = ({setIsMember}) => {
     const [email, setEmail] = useState({value:'', isError:false});
     const [password, setPassword] = useState({value:'', isError:false});
     const [passwordConfirm, setPasswordConfirm] = useState({value:'', isError:false});
+    const [isLoading, setIsLoading] = useState(false);
 
     const [createUser,] = useCreateUserMutation();
 
@@ -27,6 +29,7 @@ const Signup = ({setIsMember}) => {
             password: password.value,
             passwordConfirm:passwordConfirm.value
         }
+        setIsLoading(true);
         createUser(body)
         .unwrap()
         .then(handleSuccess)
@@ -66,11 +69,13 @@ const Signup = ({setIsMember}) => {
         if (err.data.message.includes('E11000')) {
             setEmail({value:'Email already exists', isError:true});
         }
+        setIsLoading(false);
     }
 
 
     return (
         <LoginContainer>
+            {isLoading && <LoadingSpinner topPosition={'1vmin'}/>}
             <Form onSubmit={handleSubmit}>
             <LogoContainer>
                 <Logo/> 

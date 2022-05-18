@@ -6,7 +6,8 @@ import { useLoginUserMutation } from '../../state/api';
 import { setLogin } from '../../state/authReducer';
 import {toast} from 'react-toastify';
 import { useNavigate   } from 'react-router-dom';
-    
+import LoadingSpinner from '../../components/loader/loader';
+
 const Login = ({setIsMember}) => {
 
 
@@ -15,6 +16,7 @@ const Login = ({setIsMember}) => {
 
     const dispatch = useDispatch();
     const [loginUser, result] = useLoginUserMutation();
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate ();
 
@@ -24,6 +26,7 @@ const Login = ({setIsMember}) => {
             email,
             password,
         }
+        setIsLoading(true);
         loginUser(body)
         .unwrap()
         .then(handleSuccess)
@@ -41,9 +44,11 @@ const Login = ({setIsMember}) => {
     const handleError = (err) =>{
         const {message, status} = err.data
         toast.error(`Status: ${status}. message: ${message}`)
+        setIsLoading(false);
     }
     return (
         <LoginContainer>
+            {isLoading && <LoadingSpinner topPosition={'10vmin'}/>}
             <Form onSubmit={handleSubmit}>
             <LogoContainer>
                 <Logo/> 

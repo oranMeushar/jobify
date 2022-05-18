@@ -9,11 +9,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setJobs } from '../../state/jobsReducer';
 import JobCard from '../../components/jobCard/jobCard';
 import moment from 'moment-timezone';
+import LoadingSpinner from '../../components/loader/loader';
 const AllJobs = () => {
     const [search, setSearch] = useState('');
     const [status, setStatus] = useState('All');
     const [jobType, setJobType] = useState('All');
     const [sortBy, setSortBy] = useState('Latest');
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
     const jobs = useSelector(state =>state.jobs.jobsList);
@@ -21,6 +23,7 @@ const AllJobs = () => {
     const fetchJobs = async () =>{
         let res, data;
         const user = JSON.parse(localStorage.getItem('user'));
+        setIsLoading(true);
         res = await fetch('http://localhost:5000/jobs',{
             method:'GET',
             headers:{
@@ -30,6 +33,7 @@ const AllJobs = () => {
         })
 
         data = await res.json();
+        setIsLoading(false);
         dispatch(setJobs(data.data))
     }
 
@@ -118,6 +122,7 @@ const AllJobs = () => {
 
     return (
         <AllJobsContainer>
+            {isLoading && <LoadingSpinner topPosition={'22vmin'}/>}
         <SearchFormContainer>
             <FormTitle>Filters</FormTitle>
             <FieldsContainer>

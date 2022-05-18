@@ -9,11 +9,13 @@ import {StatsContainer, CardsContainer} from './stats.style';
 import Card from './card/card';
 import Chart from './chart/chart';
 import { useResizeDetector } from 'react-resize-detector';
+import LoadingSpinner from '../../components/loader/loader';
 
 const Stats = () => {
 
     const dispatch = useDispatch();
 
+    const [isLoading, setIsLoading] = useState(false);
 
     const jobs = useSelector(getCountOfJobsTypes);
     const {categories, interview, pending, decline} = useSelector(getSeriesDataForChart);
@@ -23,6 +25,7 @@ const Stats = () => {
     const fetchJobs = async () =>{
         let res, data;
         const user = JSON.parse(localStorage.getItem('user'));
+        setIsLoading(true);
         res = await fetch('http://localhost:5000/jobs',{
             method:'GET',
             headers:{
@@ -30,8 +33,8 @@ const Stats = () => {
                 'Content-Type': 'application/json',
             }
         })
-
         data = await res.json();
+        setIsLoading(false);
         dispatch(setJobs(data.data));
     }
 
@@ -40,7 +43,7 @@ const Stats = () => {
     },[])
     return (
         <StatsContainer>
-
+            {isLoading && <LoadingSpinner topPosition={'22vmin'}/>}
             <CardsContainer>
                 <Card 
                     icon={<FaBriefcase/>} 

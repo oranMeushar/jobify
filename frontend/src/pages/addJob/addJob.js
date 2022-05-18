@@ -6,6 +6,8 @@ import {AddJobContainer, FormTitle, FieldsContainer,Button, ButtonContainer} fro
 import {toast} from 'react-toastify';
 import { useLocation, useNavigate   } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import LoadingSpinner from '../../components/loader/loader';
+
 const AddJob = () => {
 
     const [position, setPosition] = useState('');
@@ -13,8 +15,7 @@ const AddJob = () => {
     const [location, setLocation] = useState('');
     const [status, setStatus] = useState('Pending');
     const [jobType, setJobType] = useState('Full-Time');
-
-    const [iseEdit, setIsEdit] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [addJob] = useAddJobMutation();
     const [editJob] = useEditJobMutation();
@@ -59,7 +60,7 @@ const AddJob = () => {
             status,
             jobType,
         }
-
+        setIsLoading(true);
         if(search.includes('edit=true')){
             editJob({body, id:state.id})
             .unwrap()
@@ -88,16 +89,18 @@ const AddJob = () => {
     const handleSuccess = (fulfilled) =>{
         search.includes('edit=true') ?
          toast.success('Successfully updated selected job') :
-         toast.success('Successfully added a new job')
-        
+         toast.success('Successfully added a new job');
+         setIsLoading(false);
     }
 
     const handleError = (err) =>{  
-        toast.error(`Position and Company fields are required`)
+        toast.error(`Position and Company fields are required`);
+        setIsLoading(false);
     }
 
     return (
         <AddJobContainer>
+            {isLoading && <LoadingSpinner topPosition={'22vmin'}/>}
             <form className='form' onSubmit={handleSubmit}>
                 <FormTitle>{search.includes('edit=true') ? 'Edit ' : 'Add '}Job</FormTitle>
                 <FieldsContainer>
