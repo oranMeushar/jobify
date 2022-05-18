@@ -72,11 +72,11 @@ const profile = catchAsync(async(req, res, next) =>{
     user = await User.findByIdAndUpdate(user.id, updatedFields, {runValidators:true, returnDocument:'after'});
 
     if(password && !passwordConfirm){
-        return next(new AppError('Please confirm password'))
+        return next(new AppError('Please confirm password', 'Failed', 400))
     }
 
     if(!password && passwordConfirm){
-        return next(new AppError('Please fill the password field'))
+        return next(new AppError('Please fill the password field', 'Failed', 400))
     }
 
     if(password && passwordConfirm){
