@@ -12,7 +12,7 @@ export const ProfileContainer = styled.div`
         width:95%;
         border-radius: 0.6rem;
     }
-
+    
     
 `;
 
@@ -34,6 +34,14 @@ export const FieldsContainer = styled.div`
             margin-bottom:1.5vmin;
         }
     }
+
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(2, minmax(min-content, 1fr));
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: repeat(1, minmax(min-content, 1fr));
+    }
 `;
 
 export const ButtonContainer = styled.div`
@@ -41,6 +49,17 @@ export const ButtonContainer = styled.div`
     justify-self: center;
     grid-row: 1 / span 2;
     grid-column:  3 / 4;
+
+
+    @media (max-width: 1000px) {
+        grid-row: 3 / 4;
+        grid-column:  1 / 2;
+    }
+
+    @media (max-width: 600px) {
+        grid-row: 5 / 6;
+        grid-column:  1 / 2;
+    }
 
 `;
 export const Button = styled.button`

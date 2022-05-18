@@ -37,6 +37,14 @@ export const FieldsContainer = styled.div`
     & select{
         padding:0.8vmin;
     }
+
+    @media (max-width: 1000px) {
+        grid-template-columns: repeat(2, minmax(min-content, 1fr));
+    }
+
+    @media (max-width: 720px) {
+        grid-template-columns: repeat(1, minmax(min-content, 1fr));
+    }
 `;
 
 export const SubmitButton = styled.button`
