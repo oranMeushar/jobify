@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"nodemon app.js\" \"cd frontend && npm run start\"",
+    "start-debug": "concurrently \"npm run server-debug\" \"cd frontend && npm run start\"",
+    "server-debug": "nodemon app.js --inspect"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^7.1.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moment-timezone": "^0.5.34",
+    "mongoose": "^6.3.2",
+    "morgan": "^1.10.0",
+    "react-icons": "^4.3.1",
+    "react-router": "^6.3.0",
+    "validator": "^13.7.0"
+  }
+}

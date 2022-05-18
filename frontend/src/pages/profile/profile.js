@@ -1,0 +1,109 @@
+import React, {useState} from 'react';
+import withHeaderAndNav from '../../hocs/withHeaderAndNav/withHeaderAndNav';
+import { Input } from '../register/register.style';
+import {toast} from 'react-toastify';
+import {ProfileContainer, FormTitle, FieldsContainer, Button, ButtonContainer} from './profile.style';
+import { useChangeProfileMutation } from '../../state/api';
+import { setProfile } from '../../state/authReducer';
+import { useDispatch } from 'react-redux';
+const Profile = () => {
+
+
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordConfirm, setPasswordConfirm] = useState('');
+
+    const dispatch = useDispatch();
+
+    const [changeProfile, result] = useChangeProfileMutation();
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+
+        if(!name && !email && !password && !passwordConfirm){
+            toast.error('Nothing to update');
+            return;
+        }
+        const body = {
+            name,
+            email,
+            password,
+            passwordConfirm,
+        }
+
+        changeProfile(body)
+        .unwrap()
+        .then(handleSuccess)
+        .catch(handleError)
+    }
+
+    const handleSuccess = (fulfilled) =>{
+       toast.success('Successfully updated profile');
+       const {user} = fulfilled
+       dispatch(setProfile(user));
+    }
+
+    const handleError = (err) =>{  
+        let errorsString = '';
+        
+        const {errors} = err.data;
+        if (errors) {
+            for (const key in errors) {
+                errorsString += errors[key].message + '.' + '\n' ;
+            }
+        }
+
+        if(!errors){
+            errorsString += err.data.error.message + '.' + '\n' ;
+
+        }
+
+        if (err.data.message.includes('E11000')) {
+            errorsString += 'Email already exist' + '.' + '\n' ;
+        }
+
+        toast.error(errorsString);
+    }
+
+
+    return (
+        <ProfileContainer>
+        <form className='form' onSubmit={handleSubmit}>
+            <FormTitle>Profile</FormTitle>
+            <FieldsContainer>
+
+                <label htmlFor='name'>
+                    <span>Name</span>
+                    <Input type='text' id='name' value={name} onChange={(e) => setName(e.target.value)} required/>
+                </label>
+
+                <label htmlFor='email'>
+                    <span>Email</span>
+                    <Input type='text' id='email' value={email} onChange={(e)=>setEmail(e.target.value)} required/>
+                </label>
+
+                <ButtonContainer>
+                    <Button color={'2cb1bc'} onClick={handleSubmit}>Submit</Button>
+                </ButtonContainer>
+
+                <label htmlFor='password'>
+                    <span>Password</span>
+                    <Input type='password' id='password' value={password} onChange={(e)=>setPassword(e.target.value)} required/>
+                </label>
+
+                <label htmlFor='passwordConfirm'>
+                    <span>Confirm Password</span>
+                    <Input type='password' id='passwordConfirm' value={passwordConfirm} onChange={(e)=>setPasswordConfirm(e.target.value)} required/>
+                </label>
+            </FieldsContainer>
+        </form>
+    </ProfileContainer>
+    );
+};
+
+export default withHeaderAndNav(Profile);
+
+
+
+
+
